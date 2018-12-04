@@ -8,6 +8,9 @@
 
 PLATFORM=$(shell uname -s)
 
+# Allow for override of default pkgconfig binary (for cross-compiling)
+PKGCONFIG ?= pkg-config
+
 # Pass RELEASE=anything to build without debug symbols
 ifneq (,$(strip $(RELEASE)))
 	BASE_CFLAGS := -O1
@@ -23,16 +26,16 @@ endif
 BASE_CFLAGS += --std=gnu99 --pedantic -Wall
 
 ifeq ($(PLATFORM),Linux)
-	LIBS = `pkg-config --libs libusb-1.0`
-	LIBUSB_CFLAGS = `pkg-config --cflags libusb-1.0`
+	LIBS = `$(PKGCONFIG) --libs libusb-1.0`
+	LIBUSB_CFLAGS = `$(PKGCONFIG) --cflags libusb-1.0`
 else ifeq ($(PLATFORM),Darwin)
-	LIBS = $(shell pkg-config --libs libusb-1.0)
-	LIBUSB_CFLAGS = $(shell pkg-config --cflags libusb-1.0)
+	LIBS = $(shell $(PKGCONFIG) --libs libusb-1.0)
+	LIBUSB_CFLAGS = $(shell $(PKGCONFIG) --cflags libusb-1.0)
 	#MacOSSDK=$(shell xcrun --show-sdk-path)
 	#BASE_CFLAGS += -I$(MacOSSDK)/usr/include/ -I$(MacOSSDK)/usr/include/sys -I$(MacOSSDK)/usr/include/machine
 else ifeq ($(PLATFORM),FreeBSD)
-	LIBS = `pkg-config --libs libusb-1.0`
-	LIBUSB_CFLAGS = `pkg-config --cflags libusb-1.0`
+	LIBS = `$(PKGCONFIG) --libs libusb-1.0`
+	LIBUSB_CFLAGS = `$(PKGCONFIG) --cflags libusb-1.0`
 else
 # 	Generic case is Windows
 
