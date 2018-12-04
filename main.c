@@ -81,6 +81,7 @@ programmer_t pgms[] = {
 		stlink2_swim_read_range,
 		stlink2_swim_write_range,
 	},
+#ifndef NO_ESP
 	{
 		"espstlink",
 		ESP_STLink,
@@ -92,6 +93,7 @@ programmer_t pgms[] = {
 		espstlink_swim_read_range,
 		espstlink_swim_write_range,
 	},
+#endif
 	{ NULL },
 };
 
